@@ -64,6 +64,38 @@ def retrieve_answers(query):
     response=chain.run(input_documents=doc_search,question=query)
     return response
 #---------------------------------------------------------------------------------------------------------
+
+def ask_and_get_answer(vector_store, q, k=3):
+    from langchain.chains import RetrievalQA
+    from langchain_openai import ChatOpenAI
+
+    # Initialize the language model with the specified parameters.
+    llm = ChatOpenAI(model='gpt-3.5-turbo', temperature=0)
+
+    # Set up the retriever with the given vector store and search parameters.
+    retriever = vector_store.as_retriever(search_type='similarity', search_kwargs={'k': k})
+
+    # Create a retrieval-based QA chain that returns the source documents along with the answers.
+    chain = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever, return_source_documents=True)
+
+    # Invoke the chain with the provided question and get the response.
+    answer = chain.invoke(q)
+
+    # Print the result from the answer.
+    print(answer['result'])
+
+    # Print reference information.
+    print('Reference:\n')
+    # for doc in answer["source_documents"]:
+    #     raw_dict = doc.metadata
+    #     print("Page number:", raw_dict['page'], "Filename:", raw_dict['source'])
+    for x in range(len(answer["source_documents"][0].metadata)):
+        raw_dict = answer["source_documents"][x].metadata
+        print("Page number:", raw_dict['page'], "Filename:", raw_dict['source'])
+
+    # If needed, return the answer object.
+    return answer
+#-----------------------------------------------------------------------------------------------------------------
 def query_refiner(conversation, query):
 
     response = openai.completions.create(
