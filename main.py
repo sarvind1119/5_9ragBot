@@ -42,7 +42,20 @@ conversation = ConversationChain(memory=st.session_state.buffer_memory, prompt=p
 response_container = st.container()
 # container for text box
 textcontainer = st.container()
+# Sidebar contents
+with st.sidebar:
+    st.title('💬 LLM Chat App on MoTA Twelfth Five Year Plan(2012–2017) Social Sectors...')
+    st.markdown('''
+    ## About
+    This GPT helps in answering questions related to document of Ministry of Tribal Affairs
 
+
+
+    [Documents Repository](https://drive.google.com/drive/folders/1Xq4-oZR43Fp4rSKBnVLXqJpP4BXD7Wzf?usp=drive_link)
+ 
+    ''')
+    #add_vertical_space(5)
+    st.write('Made by LBSNAA for learning purpose](https://www.lbsnaa.gov.in/)')
 
 with textcontainer:
     query = st.text_input("Query: ", key="input")
