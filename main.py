@@ -25,8 +25,8 @@ if 'buffer_memory' not in st.session_state:
             st.session_state.buffer_memory=ConversationBufferWindowMemory(k=3,return_messages=True)
 
 
-system_msg_template = SystemMessagePromptTemplate.from_template(template="""Answer the question as truthfully as possible using the provided context, 
-and if the answer is not contained within the text below, say 'I don't know'""")
+system_msg_template = SystemMessagePromptTemplate.from_template(template="""Answer the question as truthfully as possible using your knowledge base only 
+and if the answer is not contained within the knowledge base, say 'I don't know'""")
 
 
 human_msg_template = HumanMessagePromptTemplate.from_template(template="{input}")
@@ -44,7 +44,7 @@ response_container = st.container()
 textcontainer = st.container()
 # Sidebar contents
 with st.sidebar:
-    st.title('💬 LLM Chat App on MoTA Twelfth Five Year Plan(2012–2017) Social Sectors...')
+    st.title('💬 LLM Chat App on Ministry of Tribal Affairs documents...')
     st.markdown('''
     ## About
     This GPT helps in answering questions related to document of Ministry of Tribal Affairs
