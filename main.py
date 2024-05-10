@@ -56,8 +56,17 @@ with textcontainer:
             context = ask_and_get_answer(vectorstore,refined_query)
             # print(context)  
             response = conversation.predict(input=f"Context:\n {context} \n\n Query:\n{query}")
-        st.session_state.requests.append(query)
-        st.session_state.responses.append(response) 
+            st.session_state.requests.append(query)
+            st.session_state.responses.append(response)
+
+            if "source_documents" in context:
+                st.write("### Reference Documents")
+                for i, doc in enumerate(context['source_documents'], start=1):
+                    st.write(f"#### Document {i}")
+                    st.write(f"**Page number:** {doc.metadata['page']}")
+                    st.write(f"**Source file:** {doc.metadata['source']}")
+                    content = doc.page_content.replace('\n', '  \n')  # Ensuring markdown line breaks
+                    st.markdown(content)
 with response_container:
     if st.session_state['responses']:
 
